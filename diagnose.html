@@ -1,0 +1,1406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Clinical Pain Diagnostic — 100-question</title>
+<style>
+:root{
+  --bg1:#f6fbff; --card:#ffffff; --accent:#075985; --accent2:#0ea5a3;
+  --muted:#475569; --good:#2e7d32; --warn:#f59e0b; --bad:#dc2626;
+  --glass: rgba(255,255,255,0.6);
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter, ui-sans-serif, system-ui, -apple-system, "Noto Sans Malayalam", Arial; background:linear-gradient(180deg,var(--bg1),#eef9fb); color:#042a2a}
+.header{background:linear-gradient(90deg,var(--accent),var(--accent2)); color:white;padding:22px 18px;text-align:left;display:flex;gap:20px;align-items:center}
+.header h1{margin:0;font-size:20px}
+.header p{margin:0;opacity:.95}
+.container{display:flex;gap:18px;padding:18px;align-items:flex-start}
+.questions{flex:1;min-width:320px;max-width:900px}
+.sidebar{width:320px;min-width:260px;background:linear-gradient(180deg,#ffffff,#f4fdff);padding:18px;border-radius:12px;position:sticky;top:22px;align-self:flex-start;box-shadow:0 10px 30px rgba(2,36,38,0.08)}
+.card{background:var(--card);padding:14px;border-radius:10px;margin-bottom:14px;box-shadow:0 6px 18px rgba(2,36,38,0.04)}
+.progressWrap{background:#ebf8ff;border-radius:999px;padding:6px;margin-bottom:12px}
+.progress{height:14px;background:linear-gradient(90deg,var(--accent),var(--accent2));width:0;border-radius:999px;transition:width .3s}
+.q{background:var(--card);border-radius:12px;padding:14px;margin-bottom:12px;box-shadow:0 6px 20px rgba(2,36,38,0.04)}
+.q p{margin:0 0 8px;font-weight:700;color:#023033}
+.opts label{display:block;cursor:pointer;padding:8px;border-radius:8px;margin-bottom:6px;border:1px solid #eff8f8;background:linear-gradient(180deg,#fff,#fbffff)}
+.opts small{display:block;color:var(--muted);font-weight:600;margin-top:4px}
+.motivation{background:linear-gradient(90deg,#fff8f0,#fffaf6);border-left:4px solid #ffb74d;padding:12px;border-radius:10px;margin:18px 0;color:#7a4a02;font-style:italic}
+.sideTitle{font-weight:800;color:var(--accent);margin-bottom:8px}
+.sideItem{display:flex;justify-content:space-between;align-items:center;margin:8px 0}
+.sideBarBar{background:#e6fbf9;border-radius:999px;height:12px;overflow:hidden;flex:1;margin-left:10px;margin-right:8px}
+.sideBarFill{height:100%;width:0;background:linear-gradient(90deg,#06b6d4,#075985);transition:width .3s}
+.resultBox{padding:12px;border-radius:10px;background:#f7fffe;border:1px solid #dff7f6;margin-top:12px}
+.btn{background:linear-gradient(90deg,var(--accent),var(--accent2));color:white;padding:10px 14px;border-radius:10px;border:none;cursor:pointer;font-weight:700}
+.btn.secondary{background:#ffffff;border:1px solid #d6f0f0;color:var(--accent);box-shadow:none}
+.small{font-size:13px;color:var(--muted)}
+.footer{font-size:12px;color:var(--muted);padding:14px}
+@media(max-width:980px){.container{flex-direction:column}.sidebar{position:relative;width:100%;top:auto}}
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div style="flex:1">
+    <h1>Clinical Pain Diagnostic — 100 Q</h1>
+    <p class="small">Comprehensive screening with suggested confirmatory tests. Results show probable diagnoses and next steps.</p>
+  </div>
+  <div style="text-align:right">
+    <div class="small">Offline HTML — Save / Open in browser</div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="questions">
+
+    <!-- top progress -->
+    <div class="card">
+      <div style="display:flex;justify-content:space-between;align-items:center">
+        <div><strong>Progress</strong><div class="small">Answer the questions honestly</div></div>
+        <div id="qCount" class="small">0 / 100</div>
+      </div>
+      <div class="progressWrap" style="margin-top:12px">
+        <div class="progress" id="topProgress" role="progressbar" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    </div>
+
+    <!-- Questions start grouped -->
+    <!-- We'll generate 100 questions grouped into sections with Malayalam simple explanations (in brackets) -->
+    <!-- Each question uses 3 radio options: Yes=2, Sometimes=1, No=0 -->
+    <!-- Section: Joint & Arthritis (1-20) -->
+    <h2 style="color:#075985;margin-top:6px">Joint / Arthritis (1–20)</h2>
+
+    <!-- 1 -->
+    <div class="q" id="q1">
+      <p>1. Do you have stiffness in joints when you wake up?</p>
+      <div class="opts">
+        <label><input type="radio" name="q1" value="2" onchange="updateProgress()"> Yes (ഉണർന്നപ്പോൾ സംയുക്തങ്ങൾ കഠിനമാവുന്നത്)</label>
+        <label><input type="radio" name="q1" value="1" onchange="updateProgress()"> Sometimes (ചിലപ്പോൾ)</label>
+        <label><input type="radio" name="q1" value="0" onchange="updateProgress()"> No (ഇല്ല)</label>
+      </div>
+      <small class="small">(Morning stiffness = rheumatoid arthritis സാധ്യതയുടെ ലക്ഷണം)</small>
+    </div>
+
+    <!-- 2 -->
+    <div class="q" id="q2">
+      <p>2. Do you have visible swelling of any joint?</p>
+      <div class="opts">
+        <label><input type="radio" name="q2" value="2" onchange="updateProgress()"> Yes (സന്ധി വീർപ്പ്/വയര്‍)</label>
+        <label><input type="radio" name="q2" value="1" onchange="updateProgress()"> Sometimes (ചിലപ്പോൾ)</label>
+        <label><input type="radio" name="q2" value="0" onchange="updateProgress()"> No (ഇല്ല)</label>
+      </div>
+      <small class="small">(Swelling suggests inflammation/infective or inflammatory arthritis)</small>
+    </div>
+
+    <!-- 3 -->
+    <div class="q" id="q3">
+      <p>3. Is joint pain worse at the end of the day after activity?</p>
+      <div class="opts">
+        <label><input type="radio" name="q3" value="2" onchange="updateProgress()"> Yes (ചലനത്തിന്റെ അവസാനം വേദന കൂടുന്നു)</label>
+        <label><input type="radio" name="q3" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q3" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Mechanical pain like osteoarthritis worsens with use)</small>
+    </div>
+
+    <!-- 4 -->
+    <div class="q" id="q4">
+      <p>4. Do your joints feel hot or red frequently?</p>
+      <div class="opts">
+        <label><input type="radio" name="q4" value="2" onchange="updateProgress()"> Yes (സന്ധികള്‍ ചൂടും ചുവപ്പും കാണുന്നു)</label>
+        <label><input type="radio" name="q4" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q4" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Heat/redness indicates active inflammation)</small>
+    </div>
+
+    <!-- 5 -->
+    <div class="q" id="q5">
+      <p>5. Do you have pain that wakes you at night?</p>
+      <div class="opts">
+        <label><input type="radio" name="q5" value="2" onchange="updateProgress()"> Yes (രാത്രിയില്‍ വേദന കൊണ്ട് ഉണരും)</label>
+        <label><input type="radio" name="q5" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q5" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Night pain can be inflammatory, infective, or sinister)</small>
+    </div>
+
+    <!-- 6 -->
+    <div class="q" id="q6">
+      <p>6. Do you have symmetry (same joints on both sides) involvement?</p>
+      <div class="opts">
+        <label><input type="radio" name="q6" value="2" onchange="updateProgress()"> Yes (ഇരുവശത്തും സമാനമായി ബാധിക്കുന്നു)</label>
+        <label><input type="radio" name="q6" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q6" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Symmetric small joint involvement suggests RA)</small>
+    </div>
+
+    <!-- 7 -->
+    <div class="q" id="q7">
+      <p>7. Do you have pain & swelling after minor injury/ trauma?</p>
+      <div class="opts">
+        <label><input type="radio" name="q7" value="2" onchange="updateProgress()"> Yes (ചെറിയ പരിക്കിലും വേദന/വീര്‍പ്പ്)</label>
+        <label><input type="radio" name="q7" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q7" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Detailed history helps separate traumatic from inflammatory)</small>
+    </div>
+
+    <!-- 8 -->
+    <div class="q" id="q8">
+      <p>8. Do you notice morning stiffness lasting >1 hour?</p>
+      <div class="opts">
+        <label><input type="radio" name="q8" value="2" onchange="updateProgress()"> Yes (രാവിലെ 1 മണിക്കൂറിന് മിക്‌ചെയ്യുന്ന കട്ടിപ്പ്)</label>
+        <label><input type="radio" name="q8" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q8" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Prolonged morning stiffness suggests inflammatory arthritis)</small>
+    </div>
+
+    <!-- 9 -->
+    <div class="q" id="q9">
+      <p>9. Do you have difficulty opening jars or doing fine tasks due to hand pain?</p>
+      <div class="opts">
+        <label><input type="radio" name="q9" value="2" onchange="updateProgress()"> Yes (കൈവെറുതെ പ്രവര്‍ത്തനം ബുദ്ധിമുട്ട്)</label>
+        <label><input type="radio" name="q9" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q9" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Small joint disease affects daily function)</small>
+    </div>
+
+    <!-- 10 -->
+    <div class="q" id="q10">
+      <p>10. Do any joints click or give way (instability)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q10" value="2" onchange="updateProgress()"> Yes (സന്ധികള്‍ ക്ലിക്ക്/അസ്ഥിരം)</label>
+        <label><input type="radio" name="q10" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q10" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Instability suggests ligament/injury or joint degeneration)</small>
+    </div>
+
+    <!-- 11 -->
+    <div class="q" id="q11">
+      <p>11. Do you have pain in small joints (fingers/toes)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q11" value="2" onchange="updateProgress()"> Yes (വിരലുകളിലോ വിരല്‍തോളുകളില്‍ വേദന)</label>
+        <label><input type="radio" name="q11" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q11" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Small joint pain often seen in inflammatory arthritides)</small>
+    </div>
+
+    <!-- 12 -->
+    <div class="q" id="q12">
+      <p>12. Do you have pain in large weight-bearing joints (hip/knee)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q12" value="2" onchange="updateProgress()"> Yes (മുട്ട/പോരു തുടങ്ങിയ അംഗങ്ങളില്‍ വേദന)</label>
+        <label><input type="radio" name="q12" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q12" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(OA commonly affects large weight-bearing joints)</small>
+    </div>
+
+    <!-- 13 -->
+    <div class="q" id="q13">
+      <p>13. Do you have joint pain that improves with rest?</p>
+      <div class="opts">
+        <label><input type="radio" name="q13" value="2" onchange="updateProgress()"> Yes (വിശ്രമത്തില്‍ വേദന കുറയുന്നു)</label>
+        <label><input type="radio" name="q13" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q13" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Mechanical pain tends to improve with rest)</small>
+    </div>
+
+    <!-- 14 -->
+    <div class="q" id="q14">
+      <p>14. Any history of autoimmune disease (thyroid, lupus, etc.)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q14" value="2" onchange="updateProgress()"> Yes (ഓട്ടോഇമ്യൂൺ രോഗ ചരിത്രം)</label>
+        <label><input type="radio" name="q14" value="1" onchange="updateProgress()"> Sometimes (Family history)</label>
+        <label><input type="radio" name="q14" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Autoimmune history raises suspicion for inflammatory arthritis)</small>
+    </div>
+
+    <!-- 15 -->
+    <div class="q" id="q15">
+      <p>15. Any weight loss, fever, or night sweats recently?</p>
+      <div class="opts">
+        <label><input type="radio" name="q15" value="2" onchange="updateProgress()"> Yes (ഭാരം കുറയല്‍, ജ്വരം, രാവിലെ വിയര്‍പ്പ്)</label>
+        <label><input type="radio" name="q15" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q15" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Systemic symptoms may suggest infection, malignancy or active inflammation)</small>
+    </div>
+
+    <!-- 16 -->
+    <div class="q" id="q16">
+      <p>16. Do you have prolonged morning stiffness that improves with activity?</p>
+      <div class="opts">
+        <label><input type="radio" name="q16" value="2" onchange="updateProgress()"> Yes (രാവിലെ കട്ടിപ്പ് ഇപ്പോഴത്തെ പോലെ പ്രവര്‍ത്തനത്തോടെ കുറയുന്നു)</label>
+        <label><input type="radio" name="q16" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q16" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(This pattern common in inflammatory back pain / spondyloarthritis)</small>
+    </div>
+
+    <!-- 17 -->
+    <div class="q" id="q17">
+      <p>17. Do you have pain that moves from one joint to another?</p>
+      <div class="opts">
+        <label><input type="radio" name="q17" value="2" onchange="updateProgress()"> Yes (വേദന സ്ഥലാന്തരം മാറുന്നു)</label>
+        <label><input type="radio" name="q17" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q17" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Migratory pain can be seen in some inflammatory conditions)</small>
+    </div>
+
+    <!-- 18 -->
+    <div class="q" id="q18">
+      <p>18. Any morning joint stiffness + swelling that lasts for weeks?</p>
+      <div class="opts">
+        <label><input type="radio" name="q18" value="2" onchange="updateProgress()"> Yes (ഏറേകാല്‍ ആഴ്ചം മാറാതെ)</label>
+        <label><input type="radio" name="q18" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q18" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Persistent symptoms suggest chronic inflammatory disease)</small>
+    </div>
+
+    <!-- 19 -->
+    <div class="q" id="q19">
+      <p>19. Any family history of arthritis?</p>
+      <div class="opts">
+        <label><input type="radio" name="q19" value="2" onchange="updateProgress()"> Yes (കുടുംബ ചരിത്രം ഉണ്ട്)</label>
+        <label><input type="radio" name="q19" value="1" onchange="updateProgress()"> Sometimes (not sure)</label>
+        <label><input type="radio" name="q19" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Family history increases likelihood for some conditions)</small>
+    </div>
+
+    <!-- 20 -->
+    <div class="q" id="q20">
+      <p>20. Do painkillers (NSAIDs) relieve your joint pain?</p>
+      <div class="opts">
+        <label><input type="radio" name="q20" value="2" onchange="updateProgress()"> Yes, strongly (NSAIDs വളരെ സഹായിക്കുന്നു)</label>
+        <label><input type="radio" name="q20" value="1" onchange="updateProgress()"> Partial relief</label>
+        <label><input type="radio" name="q20" value="0" onchange="updateProgress()"> No effect</label>
+      </div>
+      <small class="small">(Good response to NSAIDs may suggest inflammatory pain)</small>
+    </div>
+
+    <div class="motivation">“നമ്മളെ നിലനിര്‍ത്തുന്നത് പ്രതിസന്ധിയാല്‍ ശക്തിയാകുന്നു.” — (മലയാളം പ്രചോദക പ്രഭാഷണശൈലിയില്‍)</div>
+
+    <!-- Section: Muscle / Fibromyalgia (21-40) -->
+    <h2 style="color:#075985;margin-top:6px">Muscle / Fibromyalgia / Myalgia (21–40)</h2>
+
+    <!-- 21 -->
+    <div class="q" id="q21">
+      <p>21. Do you have widespread muscle pain lasting >3 months?</p>
+      <div class="opts">
+        <label><input type="radio" name="q21" value="2" onchange="updateProgress()"> Yes (വ്യാപകമായ പേശി വേദന 3 മാസത്തിലധികം)</label>
+        <label><input type="radio" name="q21" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q21" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Fibromyalgia often presents with widespread chronic pain)</small>
+    </div>
+
+    <!-- 22 -->
+    <div class="q" id="q22">
+      <p>22. Do you feel excessive fatigue despite rest?</p>
+      <div class="opts">
+        <label><input type="radio" name="q22" value="2" onchange="updateProgress()"> Yes (വിശ്രമം കൊണ്ടും ക്ഷീണം തുടരും)</label>
+        <label><input type="radio" name="q22" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q22" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Unrefreshing sleep and fatigue point to fibromyalgia)</small>
+    </div>
+
+    <!-- 23 -->
+    <div class="q" id="q23">
+      <p>23. Do you have multiple tender spots on palpation?</p>
+      <div class="opts">
+        <label><input type="radio" name="q23" value="2" onchange="updateProgress()"> Yes (ഒറ്റത്തേ ആദ്യം സ്പർശനത്തിൽ വേദന)</label>
+        <label><input type="radio" name="q23" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q23" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Tender points support fibromyalgia diagnosis)</small>
+    </div>
+
+    <!-- 24 -->
+    <div class="q" id="q24">
+      <p>24. Do you have sleep that is not refreshing?</p>
+      <div class="opts">
+        <label><input type="radio" name="q24" value="2" onchange="updateProgress()"> Yes (ഉറക്കമെങ്കിലും മനസിന് ശാന്തിയില്ല)</label>
+        <label><input type="radio" name="q24" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q24" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Non-restorative sleep common in fibromyalgia)</small>
+    </div>
+
+    <!-- 25 -->
+    <div class="q" id="q25">
+      <p>25. Do you have frequent headaches or migraine with pain?</p>
+      <div class="opts">
+        <label><input type="radio" name="q25" value="2" onchange="updateProgress()"> Yes (തലയൊല്ല്/മൈഗ്രെയ്ൻ)</label>
+        <label><input type="radio" name="q25" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q25" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Headaches commonly coexist with fibromyalgia)</small>
+    </div>
+
+    <!-- 26 -->
+    <div class="q" id="q26">
+      <p>26. Do you have cognitive difficulties (brain fog)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q26" value="2" onchange="updateProgress()"> Yes (മനസ്സില്‍ മൂടല്‍ / ഓര്‍മ്മക്കുറവ്)</label>
+        <label><input type="radio" name="q26" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q26" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Cognitive symptoms accompany fibromyalgia)</small>
+    </div>
+
+    <!-- 27 -->
+    <div class="q" id="q27">
+      <p>27. Do symptoms worsen with stress or activity?</p>
+      <div class="opts">
+        <label><input type="radio" name="q27" value="2" onchange="updateProgress()"> Yes (മനോവിശുദ്ധി/പ്രവർത്തനം കൂടുമ്പോൾ കൂട്ടം)</label>
+        <label><input type="radio" name="q27" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q27" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Central sensitization worsens with stress/exertion)</small>
+    </div>
+
+    <!-- 28 -->
+    <div class="q" id="q28">
+      <p>28. Do you have muscle stiffness in the morning?</p>
+      <div class="opts">
+        <label><input type="radio" name="q28" value="2" onchange="updateProgress()"> Yes (കാലത്ത് പേശി കട്ടിപ്പ്)</label>
+        <label><input type="radio" name="q28" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q28" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Fibromyalgia patients often report morning stiffness)</small>
+    </div>
+
+    <!-- 29 -->
+    <div class="q" id="q29">
+      <p>29. Do you feel sensitive to touch, temperature or noise?</p>
+      <div class="opts">
+        <label><input type="radio" name="q29" value="2" onchange="updateProgress()"> Yes (സൂക്ഷ്മതകളോട് പ്രതികരിക്കുന്നു)</label>
+        <label><input type="radio" name="q29" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q29" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Sensory sensitivity supports central sensitivity syndromes)</small>
+    </div>
+
+    <!-- 30 -->
+    <div class="q" id="q30">
+      <p>30. Do you have pain that is changing in intensity and location daily?</p>
+      <div class="opts">
+        <label><input type="radio" name="q30" value="2" onchange="updateProgress()"> Yes (തീവ്രതയും സ്ഥിതിയും മാറുന്നു)</label>
+        <label><input type="radio" name="q30" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q30" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Fluctuating widespread pain typical of fibromyalgia)</small>
+    </div>
+
+    <div class="motivation">“നിന੍ਹਾਂ ശ്രമം ജീവിതത്തെ മാറ്റും.” — (സംഗ്രഹപ്രചോദന)</div>
+
+    <!-- Section: Peripheral Nerve / Neuropathy (31–50) -->
+    <h2 style="color:#075985;margin-top:6px">Peripheral Nerve / Neuropathy (31–50)</h2>
+
+    <!-- 31 -->
+    <div class="q" id="q31">
+      <p>31. Do you have numbness in hands or feet?</p>
+      <div class="opts">
+        <label><input type="radio" name="q31" value="2" onchange="updateProgress()"> Yes (കൈ/കാൽ മൃത്യു / numbness)</label>
+        <label><input type="radio" name="q31" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q31" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Peripheral neuropathy presents with numbness)</small>
+    </div>
+
+    <!-- 32 -->
+    <div class="q" id="q32">
+      <p>32. Do you have burning (heat) sensation in limbs?</p>
+      <div class="opts">
+        <label><input type="radio" name="q32" value="2" onchange="updateProgress()"> Yes (ചൂട്/കത്തുന്ന തോൽ)</label>
+        <label><input type="radio" name="q32" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q32" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Burning pain typical of neuropathic pain)</small>
+    </div>
+
+    <!-- 33 -->
+    <div class="q" id="q33">
+      <p>33. Do you have shooting/electric-shock like pain?</p>
+      <div class="opts">
+        <label><input type="radio" name="q33" value="2" onchange="updateProgress()"> Yes (വൈദ്യുതി തള്ളല്‍ പോലെയുള്ള വേദന)</label>
+        <label><input type="radio" name="q33" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q33" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Lancinating/shooting pain suggests nerve root or neuropathy)</small>
+    </div>
+
+    <!-- 34 -->
+    <div class="q" id="q34">
+      <p>34. Do you drop things due to weak grip?</p>
+      <div class="opts">
+        <label><input type="radio" name="q34" value="2" onchange="updateProgress()"> Yes (വസ്തു കൈയിൽ നിന്നൊഴിഞ്ഞു വീഴുന്നു)</label>
+        <label><input type="radio" name="q34" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q34" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Motor involvement suggests severe neuropathy or motor neuron disease — rare)</small>
+    </div>
+
+    <!-- 35 -->
+    <div class="q" id="q35">
+      <p>35. Do symptoms get worse at night?</p>
+      <div class="opts">
+        <label><input type="radio" name="q35" value="2" onchange="updateProgress()"> Yes (രാത്രി വേദന/നൂക്കം കൂടുന്നു)</label>
+        <label><input type="radio" name="q35" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q35" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Night worsening typical of neuropathic pain)</small>
+    </div>
+
+    <!-- 36 -->
+    <div class="q" id="q36">
+      <p>36. Do you have balance problems or numbness leading to falls?</p>
+      <div class="opts">
+        <label><input type="radio" name="q36" value="2" onchange="updateProgress()"> Yes (നീക്കം/നിൽക്കൽ ബുദ്ധിമുട്ട്)</label>
+        <label><input type="radio" name="q36" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q36" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Large fibre neuropathy causes imbalance)</small>
+    </div>
+
+    <!-- 37 -->
+    <div class="q" id="q37">
+      <p>37. Any prior diabetes or prolonged high sugar levels?</p>
+      <div class="opts">
+        <label><input type="radio" name="q37" value="2" onchange="updateProgress()"> Yes (മധുമേഹം/ഹൈ ഗ്ലൂക്കോസ്)</label>
+        <label><input type="radio" name="q37" value="1" onchange="updateProgress()"> Sometimes (pre-diabetes)</label>
+        <label><input type="radio" name="q37" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Diabetes is a major cause of peripheral neuropathy)</small>
+    </div>
+
+    <!-- 38 -->
+    <div class="q" id="q38">
+      <p>38. Any numbness confined to one dermatomal area (belt-like)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q38" value="2" onchange="updateProgress()"> Yes (ഒരിടത്ത് മാത്രം)</label>
+        <label><input type="radio" name="q38" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q38" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Dermatomal pattern suggests radiculopathy)</small>
+    </div>
+
+    <!-- 39 -->
+    <div class="q" id="q39">
+      <p>39. Have you had chemotherapy or alcohol abuse history?</p>
+      <div class="opts">
+        <label><input type="radio" name="q39" value="2" onchange="updateProgress()"> Yes (കീമോ/മദ്യ പതനം)</label>
+        <label><input type="radio" name="q39" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q39" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Both increase neuropathy risk)</small>
+    </div>
+
+    <!-- 40 -->
+    <div class="q" id="q40">
+      <p>40. Do you have sharp shooting pain when coughing/sneezing (radicular)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q40" value="2" onchange="updateProgress()"> Yes (കൃദിച്ച് ചുമയ്ക്കുമ്പോള്‍ കുറിയുന്ന വേദന)</label>
+        <label><input type="radio" name="q40" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q40" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Suggests nerve root irritation / disc disease)</small>
+    </div>
+
+    <div class="motivation">“പ്രയാസമാണ് വഴിതെളിയ്ക്കുന്നത്.” — (പ്രചോദന)</div>
+
+    <!-- Section: Spine & Spondyloarthritis (41-60) -->
+    <h2 style="color:#075985;margin-top:6px">Spine / Spondyloarthritis / Back Pain (41–60)</h2>
+
+    <!-- 41 -->
+    <div class="q" id="q41">
+      <p>41. Chronic low back pain lasting >3 months?</p>
+      <div class="opts">
+        <label><input type="radio" name="q41" value="2" onchange="updateProgress()"> Yes (3 മാസത്തോളം താഴ്‌വരി പിന്‍വേദന)</label>
+        <label><input type="radio" name="q41" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q41" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Chronic back pain common; causes vary)</small>
+    </div>
+
+    <!-- 42 -->
+    <div class="q" id="q42">
+      <p>42. Back stiffness worse in the morning and improves with exercise?</p>
+      <div class="opts">
+        <label><input type="radio" name="q42" value="2" onchange="updateProgress()"> Yes (രാവിലെ കട്ടിച്ച്, വ്യായാമം കൊണ്ട് കുറയുന്നു)</label>
+        <label><input type="radio" name="q42" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q42" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Characteristic of inflammatory back pain like spondyloarthritis)</small>
+    </div>
+
+    <!-- 43 -->
+    <div class="q" id="q43">
+      <p>43. Do you have buttock pain or alternating buttock pain?</p>
+      <div class="opts">
+        <label><input type="radio" name="q43" value="2" onchange="updateProgress()"> Yes (കോല്ലിഷ്ടത) / alternating)</label>
+        <label><input type="radio" name="q43" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q43" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Sacroiliac involvement often causes buttock pain)</small>
+    </div>
+
+    <!-- 44 -->
+    <div class="q" id="q44">
+      <p>44. Any morning stiffness >30 minutes in back/hips?</p>
+      <div class="opts">
+        <label><input type="radio" name="q44" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q44" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q44" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Inflammatory back pain typical duration >30 mins)</small>
+    </div>
+
+    <!-- 45 -->
+    <div class="q" id="q45">
+      <p>45. Is your back pain improved by NSAIDs?</p>
+      <div class="opts">
+        <label><input type="radio" name="q45" value="2" onchange="updateProgress()"> Yes (NSAIDs സഹായിക്കുന്നു)</label>
+        <label><input type="radio" name="q45" value="1" onchange="updateProgress()"> Partial</label>
+        <label><input type="radio" name="q45" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Good NSAID response seen in inflammatory back pain)</small>
+    </div>
+
+    <!-- 46 -->
+    <div class="q" id="q46">
+      <p>46. Any history of eye inflammation (red painful eyes)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q46" value="2" onchange="updateProgress()"> Yes (കണ്ണ് ചുവപ്പും വേദനയും — ഉവെയൈറ്റിസ്)</label>
+        <label><input type="radio" name="q46" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q46" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Uveitis is associated with spondyloarthritis)</small>
+    </div>
+
+    <!-- 47 -->
+    <div class="q" id="q47">
+      <p>47. Do you have psoriasis or history of psoriasis?</p>
+      <div class="opts">
+        <label><input type="radio" name="q47" value="2" onchange="updateProgress()"> Yes (സോറിയാസിസ് രോഗം/ചരിത്രം)</label>
+        <label><input type="radio" name="q47" value="1" onchange="updateProgress()"> Family history</label>
+        <label><input type="radio" name="q47" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Psoriatic arthritis part of spondyloarthritis group)</small>
+    </div>
+
+    <!-- 48 -->
+    <div class="q" id="q48">
+      <p>48. Any inflammatory bowel disease (IBD) history (Crohn’s / Ulcerative colitis)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q48" value="2" onchange="updateProgress()"> Yes (IBD: ക്രോണ്‍സ് / അള്‍സറേറ്റീവ് കോളൈറ്റിസ്)</label>
+        <label><input type="radio" name="q48" value="1" onchange="updateProgress()"> Sometimes (family)</label>
+        <label><input type="radio" name="q48" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(IBD associated spondyloarthritis possible)</small>
+    </div>
+
+    <!-- 49 -->
+    <div class="q" id="q49">
+      <p>49. Any sacroiliac joint pain or stiffness?</p>
+      <div class="opts">
+        <label><input type="radio" name="q49" value="2" onchange="updateProgress()"> Yes (സക്രോഇലിയാക് സംയുക്ത വേദന)</label>
+        <label><input type="radio" name="q49" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q49" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Sacroiliitis suggests spondyloarthritis)</small>
+    </div>
+
+    <!-- 50 -->
+    <div class="q" id="q50">
+      <p>50. Any family history of HLA-B27 related disease?</p>
+      <div class="opts">
+        <label><input type="radio" name="q50" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q50" value="1" onchange="updateProgress()"> Not sure</label>
+        <label><input type="radio" name="q50" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(HLA-B27 associated conditions run in families)</small>
+    </div>
+
+    <div class="motivation">“പ്രതിസന്ധി മറികടക്കുമ്പോൾ കഴിവുകൾ പുറപ്പെടുന്നു.” — (മലയാളം പ്രചോദനം)</div>
+
+    <!-- Section: Osteoporosis & Bone Health (51-65) -->
+    <h2 style="color:#075985;margin-top:6px">Bone Health / Osteoporosis (51–65)</h2>
+
+    <!-- 51 -->
+    <div class="q" id="q51">
+      <p>51. Have you had fractures after minor falls or minimal trauma?</p>
+      <div class="opts">
+        <label><input type="radio" name="q51" value="2" onchange="updateProgress()"> Yes (ചെറുവീഴ്ചയില്‍ പോലും ഭേദമായ സമീപനം)</label>
+        <label><input type="radio" name="q51" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q51" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Fragility fractures suggest osteoporosis)</small>
+    </div>
+
+    <!-- 52 -->
+    <div class="q" id="q52">
+      <p>52. Do you have gradual loss of height or stooped posture?</p>
+      <div class="opts">
+        <label><input type="radio" name="q52" value="2" onchange="updateProgress()"> Yes (ഉയരം കുറയുന്നു / കിന്നാല്‍ തീരുമാനം)</label>
+        <label><input type="radio" name="q52" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q52" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Vertebral compression fractures cause height loss)</small>
+    </div>
+
+    <!-- 53 -->
+    <div class="q" id="q53">
+      <p>53. Any early menopause or low estrogen history?</p>
+      <div class="opts">
+        <label><input type="radio" name="q53" value="2" onchange="updateProgress()"> Yes (പൂജ്യം)</label>
+        <label><input type="radio" name="q53" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q53" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Low estrogen is a risk factor for osteoporosis)</small>
+    </div>
+
+    <!-- 54 -->
+    <div class="q" id="q54">
+      <p>54. Any prolonged steroid use (oral/injection)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q54" value="2" onchange="updateProgress()"> Yes (സ്ടീറോയിഡ് ഉപയോഗം)</label>
+        <label><input type="radio" name="q54" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q54" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Steroids cause secondary osteoporosis)</small>
+    </div>
+
+    <!-- 55 -->
+    <div class="q" id="q55">
+      <p>55. Low calcium or vitamin D deficiency known?</p>
+      <div class="opts">
+        <label><input type="radio" name="q55" value="2" onchange="updateProgress()"> Yes (കാല്‍സ്യം / വിറ്റാമിൻ D കുറഞ്ഞത്)</label>
+        <label><input type="radio" name="q55" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q55" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Nutrition influences bone health)</small>
+    </div>
+
+    <!-- 56 -->
+    <div class="q" id="q56">
+      <p>56. Family history of osteoporosis or fragility fractures?</p>
+      <div class="opts">
+        <label><input type="radio" name="q56" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q56" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q56" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Genetic predisposition matters)</small>
+    </div>
+
+    <!-- 57 -->
+    <div class="q" id="q57">
+      <p>57. Do you have dull bone pain or tenderness?</p>
+      <div class="opts">
+        <label><input type="radio" name="q57" value="2" onchange="updateProgress()"> Yes (അസ്ഥി വേദന / സ്പർശനത്തോടുള്ള വേദന)</label>
+        <label><input type="radio" name="q57" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q57" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Bone pain may occur in metabolic bone disease)</small>
+    </div>
+
+    <div class="motivation">“ഏത് വഴിയിലായാലും നീ മുന്നേറുക.” — (മലയാളം പ്രചോദന)</div>
+
+    <!-- Section: Gynaec / Uterus / Menstrual (58-80) -->
+    <h2 style="color:#075985;margin-top:6px">Uterus / Menstrual / Gynaec (58–80)</h2>
+
+    <!-- 58 -->
+    <div class="q" id="q58">
+      <p>58. Do you have severe menstrual cramps interfering with daily life?</p>
+      <div class="opts">
+        <label><input type="radio" name="q58" value="2" onchange="updateProgress()"> Yes (മാസാവധി വേദന രോചന)</label>
+        <label><input type="radio" name="q58" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q58" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Dysmenorrhea may indicate endometriosis or other causes)</small>
+    </div>
+
+    <!-- 59 -->
+    <div class="q" id="q59">
+      <p>59. Is menstrual flow excessively heavy (needing frequent pad changes)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q59" value="2" onchange="updateProgress()"> Yes (വിപുലീകരിച്ച രക്തസ്രാവം)</label>
+        <label><input type="radio" name="q59" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q59" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Heavy bleeding suggests structural or hormonal issues)</small>
+    </div>
+
+    <!-- 60 -->
+    <div class="q" id="q60">
+      <p>60. Do you have pelvic pain outside your periods?</p>
+      <div class="opts">
+        <label><input type="radio" name="q60" value="2" onchange="updateProgress()"> Yes (മാസാവധിക്കാര്‍ത്ത്യത്തിനു പുറത്തെ pelvic വേദന)</label>
+        <label><input type="radio" name="q60" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q60" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Chronic pelvic pain may indicate endometriosis, PID, adenomyosis)</small>
+    </div>
+
+    <!-- 61 -->
+    <div class="q" id="q61">
+      <p>61. Do you experience pain during intercourse (dyspareunia)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q61" value="2" onchange="updateProgress()"> Yes (സംബന്ധത്തിൽ വേദന)</label>
+        <label><input type="radio" name="q61" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q61" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Could indicate pelvic pathology)</small>
+    </div>
+
+    <!-- 62 -->
+    <div class="q" id="q62">
+      <p>62. Irregular periods (skipped or too frequent)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q62" value="2" onchange="updateProgress()"> Yes (അനിയമിത മാസാവധി)</label>
+        <label><input type="radio" name="q62" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q62" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(PCOS or hormonal issues can cause irregular cycles)</small>
+    </div>
+
+    <!-- 63 -->
+    <div class="q" id="q63">
+      <p>63. Have you had infertility or difficulty conceiving?</p>
+      <div class="opts">
+        <label><input type="radio" name="q63" value="2" onchange="updateProgress()"> Yes (ഗർഭലക്ഷ്യമില്ല/പ്രയാസം)</label>
+        <label><input type="radio" name="q63" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q63" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Endometriosis or uterine pathology may affect fertility)</small>
+    </div>
+
+    <!-- 64 -->
+    <div class="q" id="q64">
+      <p>64. Abnormal vaginal discharge or fever with pelvic pain?</p>
+      <div class="opts">
+        <label><input type="radio" name="q64" value="2" onchange="updateProgress()"> Yes (അസാധാരണ ഡിസ്ചാർജ്/ജ്വരം)</label>
+        <label><input type="radio" name="q64" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q64" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Suggests pelvic inflammatory disease if present)</small>
+    </div>
+
+    <!-- 65 -->
+    <div class="q" id="q65">
+      <p>65. Any prior gynecological surgeries (myomectomy, C-section, etc.)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q65" value="2" onchange="updateProgress()"> Yes (മുൻ ശസ്ത്രക്രിയകള്‍)</label>
+        <label><input type="radio" name="q65" value="1" onchange="updateProgress()"> Sometimes (minor procedures)</label>
+        <label><input type="radio" name="q65" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Surgical history can explain adhesions/pelvic pain)</small>
+    </div>
+
+    <div class="motivation">“വിജയം അങ്ങിനെ വരുമെന്നു വിശ്വസിക്കുക.” — (മലയാളം ഉദ്ധരണം)</div>
+
+    <!-- Section: Lifestyle / Sleep / Red flags / Psych (66-100) -->
+    <h2 style="color:#075985;margin-top:6px">Lifestyle / Sleep / Red flags / Psych (66–100)</h2>
+
+    <!-- 66 -->
+    <div class="q" id="q66">
+      <p>66. Do you sleep less than 5 hours per night on average?</p>
+      <div class="opts">
+        <label><input type="radio" name="q66" value="2" onchange="updateProgress()"> Yes (രാവിലെ 5 മണിക്കൂറില്‍ താഴെ)</label>
+        <label><input type="radio" name="q66" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q66" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Poor sleep worsens pain syndromes)</small>
+    </div>
+
+    <!-- 67 -->
+    <div class="q" id="q67">
+      <p>67. Do you have high levels of stress or anxiety?</p>
+      <div class="opts">
+        <label><input type="radio" name="q67" value="2" onchange="updateProgress()"> Yes (മാനസിക സമ്മര്‍ദ്ദം/ആംഘ്രണം)</label>
+        <label><input type="radio" name="q67" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q67" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Stress contributes to chronic pain and central sensitization)</small>
+    </div>
+
+    <!-- 68 -->
+    <div class="q" id="q68">
+      <p>68. Do you do less than 30 minutes of moderate exercise per week?</p>
+      <div class="opts">
+        <label><input type="radio" name="q68" value="2" onchange="updateProgress()"> Yes (വ്യാപകമില്ല)</label>
+        <label><input type="radio" name="q68" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q68" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Sedentary lifestyle increases musculoskeletal risk)</small>
+    </div>
+
+    <!-- 69 -->
+    <div class="q" id="q69">
+      <p>69. Any current cancer diagnosis or unexplained weight loss?</p>
+      <div class="opts">
+        <label><input type="radio" name="q69" value="2" onchange="updateProgress()"> Yes (കാൻസർ/ഭാരം കുറഞ്ഞിരിക്കുന്നത്)</label>
+        <label><input type="radio" name="q69" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q69" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Red flag — needs urgent evaluation)</small>
+    </div>
+
+    <!-- 70 -->
+    <div class="q" id="q70">
+      <p>70. Recent onset of severe unexplained pain or progressive neurological deficit?</p>
+      <div class="opts">
+        <label><input type="radio" name="q70" value="2" onchange="updateProgress()"> Yes (ഗുരുതര/വൈജ്ഞാനിക കുറവ്)</label>
+        <label><input type="radio" name="q70" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q70" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Red flag — immediate medical review needed)</small>
+    </div>
+
+    <!-- 71 -->
+    <div class="q" id="q71">
+      <p>71. Do you smoke or have heavy alcohol use?</p>
+      <div class="opts">
+        <label><input type="radio" name="q71" value="2" onchange="updateProgress()"> Yes (പുകവലി/മദ്യപാനം)</label>
+        <label><input type="radio" name="q71" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q71" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Lifestyle factors affect bone and nerve health)</small>
+    </div>
+
+    <!-- 72 -->
+    <div class="q" id="q72">
+      <p>72. Are you taking medications that can cause pain (statins, chemotherapy)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q72" value="2" onchange="updateProgress()"> Yes (സ്താറ്റിൻ/കീമോ തുടങ്ങിയവ)</label>
+        <label><input type="radio" name="q72" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q72" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Drug-induced myalgias/neuropathy possible)</small>
+    </div>
+
+    <!-- 73 -->
+    <div class="q" id="q73">
+      <p>73. Do you have mood disorders (depression) affecting daily life?</p>
+      <div class="opts">
+        <label><input type="radio" name="q73" value="2" onchange="updateProgress()"> Yes (ദുഃഖം/മാനസിക പ്രശ്നം)</label>
+        <label><input type="radio" name="q73" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q73" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Mental health has major effect on pain perception)</small>
+    </div>
+
+    <!-- 74 -->
+    <div class="q" id="q74">
+      <p>74. Any known metabolic disease (thyroid, kidney, liver)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q74" value="2" onchange="updateProgress()"> Yes (തൈറോയ്ഡ്/കിഡ്നി/ലിവര്‍)</label>
+        <label><input type="radio" name="q74" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q74" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Metabolic issues cause systemic pain)</small>
+    </div>
+
+    <!-- 75 -->
+    <div class="q" id="q75">
+      <p>75. Any urinary or bowel incontinence with back pain?</p>
+      <div class="opts">
+        <label><input type="radio" name="q75" value="2" onchange="updateProgress()"> Yes (ശാസ്ത്രീയം/മല നിയന്ത്രണം നഷ്ടം)</label>
+        <label><input type="radio" name="q75" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q75" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Red flag for cauda equina — urgent emergency)</small>
+    </div>
+
+    <!-- 76 -->
+    <div class="q" id="q76">
+      <p>76. Any fever, chills, or recent infection with new pain?</p>
+      <div class="opts">
+        <label><input type="radio" name="q76" value="2" onchange="updateProgress()"> Yes (ജ്വരം/ഇൻഫെക്ഷൻ)</label>
+        <label><input type="radio" name="q76" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q76" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Consider septic arthritis or spinal infection)</small>
+    </div>
+
+    <!-- 77 -->
+    <div class="q" id="q77">
+      <p>77. Any sudden severe localized bone pain?</p>
+      <div class="opts">
+        <label><input type="radio" name="q77" value="2" onchange="updateProgress()"> Yes (ഹൃദയഭാഗത്തു ശക്തമായ അസ്ഥി വേദന)</label>
+        <label><input type="radio" name="q77" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q77" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Fracture or bone tumor may present so)</small>
+    </div>
+
+    <!-- 78 -->
+    <div class="q" id="q78">
+      <p>78. Any numbness or weakness that is progressive and one sided?</p>
+      <div class="opts">
+        <label><input type="radio" name="q78" value="2" onchange="updateProgress()"> Yes (പ്രവർത്തനക്ഷമമായ നൂറോ-ലക്ഷണം)</label>
+        <label><input type="radio" name="q78" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q78" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Progressive unilateral deficit -urgent neuro evaluation)</small>
+    </div>
+
+    <!-- 79 -->
+    <div class="q" id="q79">
+      <p>79. Do you have sleeping medications or sleeping disorder diagnosis?</p>
+      <div class="opts">
+        <label><input type="radio" name="q79" value="2" onchange="updateProgress()"> Yes (ഉറക്കമാർഗം/രോഗനിദാനം)</label>
+        <label><input type="radio" name="q79" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q79" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Sleep disorders aggravate pain)</small>
+    </div>
+
+    <!-- 80 -->
+    <div class="q" id="q80">
+      <p>80. Any legal/compensation claim related to your pain?</p>
+      <div class="opts">
+        <label><input type="radio" name="q80" value="2" onchange="updateProgress()"> Yes (കേരിയര്‍/അവകാശവാദം)</label>
+        <label><input type="radio" name="q80" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q80" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Contextual factors may influence chronic pain)</small>
+    </div>
+
+    <!-- 81 -->
+    <div class="q" id="q81">
+      <p>81. Any severe allergies causing systemic symptoms?</p>
+      <div class="opts">
+        <label><input type="radio" name="q81" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q81" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q81" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Systemic illness may present with pain)</small>
+    </div>
+
+    <!-- 82 -->
+    <div class="q" id="q82">
+      <p>82. Any chronic kidney, liver or heart disease?</p>
+      <div class="opts">
+        <label><input type="radio" name="q82" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q82" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q82" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Comorbidities influence management)</small>
+    </div>
+
+    <!-- 83 -->
+    <div class="q" id="q83">
+      <p>83. Any known blood disorders (anemia, clotting issues)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q83" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q83" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q83" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Some hematologic conditions cause bone pain or bleeding)</small>
+    </div>
+
+    <!-- 84 -->
+    <div class="q" id="q84">
+      <p>84. Are you on hormone replacement or contraceptive therapy?</p>
+      <div class="opts">
+        <label><input type="radio" name="q84" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q84" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q84" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Hormones influence bone and menstrual symptoms)</small>
+    </div>
+
+    <!-- 85 -->
+    <div class="q" id="q85">
+      <p>85. Any known vitamin deficiencies (B12, D)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q85" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q85" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q85" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(B12 deficiency causes neuropathy; D affects bones)</small>
+    </div>
+
+    <!-- 86 -->
+    <div class="q" id="q86">
+      <p>86. Do you have night sweats or unexplained fever?</p>
+      <div class="opts">
+        <label><input type="radio" name="q86" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q86" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q86" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(May indicate systemic infection or malignancy)</small>
+    </div>
+
+    <!-- 87 -->
+    <div class="q" id="q87">
+      <p>87. Any severe localized swelling or rapidly increasing mass?</p>
+      <div class="opts">
+        <label><input type="radio" name="q87" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q87" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q87" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Consider tumour, hematoma — urgent review)</small>
+    </div>
+
+    <!-- 88 -->
+    <div class="q" id="q88">
+      <p>88. Any loss of sensation specifically in the saddle area (perineum)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q88" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q88" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q88" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Red flag for cauda equina — urgent)</small>
+    </div>
+
+    <!-- 89 -->
+    <div class="q" id="q89">
+      <p>89. Any difficulty swallowing or hoarseness with neck pain?</p>
+      <div class="opts">
+        <label><input type="radio" name="q89" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q89" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q89" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Consider structural neck lesion or malignancy)</small>
+    </div>
+
+    <!-- 90 -->
+    <div class="q" id="q90">
+      <p>90. Are you currently pregnant or recently postpartum?</p>
+      <div class="opts">
+        <label><input type="radio" name="q90" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q90" value="1" onchange="updateProgress()"> Recently postpartum</label>
+        <label><input type="radio" name="q90" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Pregnancy/postpartum changes can cause pain)</small>
+    </div>
+
+    <!-- 91 -->
+    <div class="q" id="q91">
+      <p>91. Any recent unexplained bruising or bleeding?</p>
+      <div class="opts">
+        <label><input type="radio" name="q91" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q91" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q91" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Hematologic disorder possible)</small>
+    </div>
+
+    <!-- 92 -->
+    <div class="q" id="q92">
+      <p>92. Do you have chronic fatigue syndrome diagnosis?</p>
+      <div class="opts">
+        <label><input type="radio" name="q92" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q92" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q92" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Overlap with fibromyalgia common)</small>
+    </div>
+
+    <!-- 93 -->
+    <div class="q" id="q93">
+      <p>93. Any prior spine surgery?</p>
+      <div class="opts">
+        <label><input type="radio" name="q93" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q93" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q93" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Surgery can cause chronic back pain/adhesions)</small>
+    </div>
+
+    <!-- 94 -->
+    <div class="q" id="q94">
+      <p>94. Any neurological disease in the past (stroke, MS)?</p>
+      <div class="opts">
+        <label><input type="radio" name="q94" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q94" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q94" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Past neuro disease may explain deficits)</small>
+    </div>
+
+    <!-- 95 -->
+    <div class="q" id="q95">
+      <p>95. Any known psychiatric treatment or antipsychotic medications?</p>
+      <div class="opts">
+        <label><input type="radio" name="q95" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q95" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q95" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Some psychiatric medications affect pain/sleep)</small>
+    </div>
+
+    <!-- 96 -->
+    <div class="q" id="q96">
+      <p>96. Any change in bowel habits with back pain?</p>
+      <div class="opts">
+        <label><input type="radio" name="q96" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q96" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q96" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(GI causes or red flags)</small>
+    </div>
+
+    <!-- 97 -->
+    <div class="q" id="q97">
+      <p>97. Any difficulty breathing or chest pain with musculoskeletal pain?</p>
+      <div class="opts">
+        <label><input type="radio" name="q97" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q97" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q97" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(If present — urgent cardiac/pulmonary review)</small>
+    </div>
+
+    <!-- 98 -->
+    <div class="q" id="q98">
+      <p>98. Any immobilization (bedbound) for long periods recently?</p>
+      <div class="opts">
+        <label><input type="radio" name="q98" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q98" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q98" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Immobility increases DVT, muscle wasting, bone loss)</small>
+    </div>
+
+    <!-- 99 -->
+    <div class="q" id="q99">
+      <p>99. Any known infectious exposure (TB, HIV) or recent travel?</p>
+      <div class="opts">
+        <label><input type="radio" name="q99" value="2" onchange="updateProgress()"> Yes</label>
+        <label><input type="radio" name="q99" value="1" onchange="updateProgress()"> Sometimes</label>
+        <label><input type="radio" name="q99" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Some infections cause bone/joint disease)</small>
+    </div>
+
+    <!-- 100 -->
+    <div class="q" id="q100">
+      <p>100. Do you want an urgent review by a specialist if red flags are present?</p>
+      <div class="opts">
+        <label><input type="radio" name="q100" value="2" onchange="updateProgress()"> Yes, recommend urgent review</label>
+        <label><input type="radio" name="q100" value="1" onchange="updateProgress()"> Yes, within days</label>
+        <label><input type="radio" name="q100" value="0" onchange="updateProgress()"> No</label>
+      </div>
+      <small class="small">(Patient preference for next step)</small>
+    </div>
+
+    <!-- final controls -->
+    <div style="display:flex;gap:12px;margin:18px 0;align-items:center">
+      <button class="btn" onclick="calculate()">Show Diagnosis & Tests</button>
+      <button class="btn secondary" onclick="copySummary()">Copy Summary</button>
+      <button class="btn secondary" onclick="window.print()">Save PDF / Print</button>
+    </div>
+
+    <div id="finalResult" class="resultBox" style="display:none"></div>
+    <div class="footer">This tool provides a clinical-style screening. It does NOT replace clinical examination or investigations. For urgent symptoms please seek emergency care.</div>
+
+  </div>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <div class="sideTitle">Live Diagnosis Progress</div>
+    <div class="sideItem"><div style="font-weight:700">Joint</div><div class="sideBarBar"><div id="fill-joint" class="sideBarFill"></div></div><div id="num-joint">0%</div></div>
+    <div class="sideItem"><div style="font-weight:700">Muscle / Fibro</div><div class="sideBarBar"><div id="fill-muscle" class="sideBarFill"></div></div><div id="num-muscle">0%</div></div>
+    <div class="sideItem"><div style="font-weight:700">Nerve</div><div class="sideBarBar"><div id="fill-nerve" class="sideBarFill"></div></div><div id="num-nerve">0%</div></div>
+    <div class="sideItem"><div style="font-weight:700">Spine / Spondylo</div><div class="sideBarBar"><div id="fill-spondy" class="sideBarFill"></div></div><div id="num-spondy">0%</div></div>
+    <div class="sideItem"><div style="font-weight:700">Bone / Osteo</div><div class="sideBarBar"><div id="fill-bone" class="sideBarFill"></div></div><div id="num-bone">0%</div></div>
+    <div class="sideItem"><div style="font-weight:700">Gynae</div><div class="sideBarBar"><div id="fill-gyn" class="sideBarFill"></div></div><div id="num-gyn">0%</div></div>
+
+    <div style="margin-top:12px" class="small">Red Flags</div>
+    <div id="redFlags" style="margin-top:8px;color:var(--bad);font-weight:700"></div>
+
+    <div style="margin-top:14px">
+      <div class="small">Quick guide:</div>
+      <ul class="small">
+        <li><b>OA</b>: Pain worsens with use; morning stiffness < 30 min; X-ray recommended.</li>
+        <li><b>RA</b>: Symmetric small joint swelling, prolonged morning stiffness; RF/anti-CCP/ESR/CRP.</li>
+        <li><b>Fibromyalgia</b>: Widespread pain, non-restorative sleep, fatigue; tender point exam, sleep hygiene.</li>
+        <li><b>Neuropathy</b>: Burning/tingling/numbness; EMG/NCS, B12, glucose.</li>
+        <li><b>Spondyloarthritis</b>: Inflammatory back pain pattern; HLA-B27, MRI sacroiliac.</li>
+        <li><b>Osteoporosis</b>: Fragility fractures; DEXA scan, Ca/Vit D testing.</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ---------- Utilities ---------- */
+const totalQuestions = 100;
+function qName(n){ return 'q'+n }
+
+/* ---------- categories mapping (questions relevant to each condition) ---------- */
+/* these lists are selected clinically to represent contribution to each condition */
+const categories = {
+  joint: [1,2,3,4,5,6,8,9,10,11,12,13,14,16,17,18,19,20],
+  muscle: [21,22,23,24,25,26,27,28,29,30,92,22,24],
+  nerve: [31,32,33,34,35,36,37,38,39,40],
+  spondylo: [42,43,44,45,46,47,48,49,50,16],
+  bone: [51,52,53,54,55,56,57],
+  gyn: [58,59,60,61,62,63,64,65]
+}
+
+/* ---------- helper to read a question numeric value (0/1/2) ---------- */
+function getVal(name){
+  const el = document.querySelector('input[name="'+name+'"]:checked');
+  return el ? parseFloat(el.value) : 0;
+}
+
+/* ---------- update progress live ---------- */
+function updateProgress(){
+  // count answered radios
+  const answered = document.querySelectorAll('input[type=radio]:checked').length;
+  const pct = Math.round((answered/totalQuestions)*100);
+  document.getElementById('topProgress').style.width = pct + '%';
+  document.getElementById('qCount').innerText = answered + ' / ' + totalQuestions;
+
+  // category percentages (sum of values over maximum possible)
+  for(const cat in categories){
+    const qs = categories[cat];
+    let sum = 0;
+    let max = qs.length * 2;
+    qs.forEach(n => { sum += getVal('q'+n); });
+    const cp = max ? Math.round((sum/max)*100) : 0;
+    // fill bars
+    const fill = document.getElementById('fill-'+(cat==='spondylo'?'spondy':cat));
+    if(fill) fill.style.width = cp + '%';
+    const num = document.getElementById('num-'+(cat==='spondylo'?'spondy':cat));
+    if(num) num.innerText = cp + '%';
+  }
+
+  // red flags quick detection
+  let flags = [];
+  // q70 progressive neuro, q75 bowel/bladder, q88 saddle numbness, q76 infection signs
+  if(getVal('q70')>=2) flags.push('Progressive neuro deficit — urgent evaluation');
+  if(getVal('q75')>=2 || getVal('q88')>=2) flags.push('Loss of bowel/bladder or saddle anaesthesia — emergency');
+  if(getVal('q76')>=2) flags.push('Fever or infection with pain — urgent infection assessment');
+  if(getVal('q69')>=2) flags.push('Known cancer or weight loss — consider metastatic disease');
+  document.getElementById('redFlags').innerHTML = flags.length ? flags.join('<br>') : '<span style="color:#064e3b">No red flags identified</span>';
+}
+
+/* attach onchange to all radios just in case (for dynamic changes) */
+document.querySelectorAll('input[type=radio]').forEach(r=> r.addEventListener('change', updateProgress));
+
+/* ---------- calculation logic: weighted scores -> diagnosis ---------- */
+function calculate(){
+  // compute raw sums
+  const sums = {};
+  for(const cat in categories){
+    sums[cat] = categories[cat].reduce((acc,n)=> acc + getVal('q'+n), 0);
+  }
+
+  // percent per category
+  const perc = {};
+  for(const cat in categories){
+    const maxPossible = categories[cat].length * 2;
+    perc[cat] = Math.round((sums[cat]/maxPossible)*100);
+  }
+
+  // Clinical interpretation logic with thresholds (example, adjustable)
+  const diagnoses = [];
+  // Joint: differentiate RA vs OA roughly
+  // RA-like features: q1 (morning stiffness), q2 (swelling), q6 (symmetry), q8 (>1hr morning)
+  const raScore = getVal('q1') + getVal('q2') + getVal('q6') + getVal('q8') + getVal('q18') + getVal('q14');
+  if(raScore >= 6){ // out of max 12
+    diagnoses.push({name:'Inflammatory arthritis (e.g., Rheumatoid arthritis)',prob: Math.min(95, Math.round((raScore/12)*100)),tests:['RF (Rheumatoid factor)','Anti-CCP antibody','ESR & CRP','Consider Rheumatology referral'],explain:'ആന്തരഘടനാ സന്ധിവാതം (RA) സംശയം — ശസ്ത്രക്രിയ നടത്തണമെന്ന് കരുതാം.'});
+  } else if(perc.joint >= 55){
+    diagnoses.push({name:'Degenerative arthritis / Osteoarthritis',prob: perc.joint, tests:['X-ray of affected joint(s)','Physiotherapy / weight management'], explain:'ഓസ്റ്റിയോാർത്രൈറ്റിസ് — പ്രതിരോധത്തിന്റെ ഘടനാസംബന്ധമായ തകർച്ച.'});
+  }
+
+  // Muscle / Fibromyalgia
+  const fibroScore = categories.muscle.reduce((acc,n)=> acc + getVal('q'+n),0);
+  // maximum: categories.muscle.length*2
+  if(fibroScore >= Math.round(categories.muscle.length*1.2)){ // conservative
+    diagnoses.push({name:'Fibromyalgia / Central sensitivity',prob: Math.round((fibroScore/(categories.muscle.length*2))*100),tests:['Tender point/clinical exam','Sleep assessment','Consider referral to pain clinic or rheumatology'],explain:'വ്യാപകമായ മാംസ+ന്യായീകരണ പ്രശ്നങ്ങള്‍ (ഫൈബ്രോമയൽജിയ) സാധ്യത.'});
+  }
+
+  // Neuropathy
+  const neuroScore = categories.nerve.reduce((acc,n)=> acc + getVal('q'+n),0);
+  if(neuroScore >= Math.round(categories.nerve.length*0.9)){ diagnoses.push({name:'Peripheral neuropathy',prob:Math.round((neuroScore/(categories.nerve.length*2))*100),tests:['Nerve conduction study (NCS) / EMG','Blood sugar (HbA1c)','Vitamin B12, TSH'],explain:'നാഡീവ്യവസ്ഥാ പ്രശ്നങ്ങളുടെ ലക്ഷണങ്ങൾ—നീരുമിച്ച് പരിശോധിക്കുക.'}); }
+
+  // Spondyloarthritis / inflammatory back pain
+  let spondyScore=0; categories.spondylo.forEach(n=> spondyScore+=getVal('q'+n));
+  if(spondyScore >= Math.round(categories.spondylo.length*0.9)){
+    diagnoses.push({name:'Spondyloarthritis (inflammatory back pain)',prob:Math.round((spondyScore/(categories.spondylo.length*2))*100),tests:['HLA-B27 (if indicated)','MRI sacroiliac joints','CRP, ESR'],explain:'ഇൻഫ്ലമേറ്ററി ബാക്ക് പെയ്ൻ—HLA-B27/MRI പരിശോധന യോജ്യമാണ്.'});
+  }
+
+  // Osteoporosis
+  const boneScore = categories.bone.reduce((acc,n)=> acc + getVal('q'+n),0);
+  if(boneScore >= Math.round(categories.bone.length*0.6)){
+    diagnoses.push({name:'Osteoporosis / Low bone mass',prob:Math.round((boneScore/(categories.bone.length*2))*100),tests:['DEXA scan (BMD)','Serum calcium, Vitamin D','Consider endocrinology/orthopaedics'],explain:'എസ്തി തകരാറുകൾ സാധ്യത — DEXA നിർദേശം.'});
+  }
+
+  // Gynae / Uterine
+  const gynScore = categories.gyn.reduce((acc,n)=> acc + getVal('q'+n),0);
+  if(gynScore >= Math.round(categories.gyn.length*0.6)){
+    diagnoses.push({name:'Gynaecologic cause (e.g., endometriosis, fibroid, PID)',prob:Math.round((gynScore/(categories.gyn.length*2))*100),tests:['Pelvic ultrasound','Pelvic exam','Hormonal panel (if indicated)','Gynae referral'],explain:'മാസാവധി/ഉട്ടറൈന്‍ പ്രശ്നം സാധ്യത.'});
+  }
+
+  // Build cumulative recommendation summary
+  let html = '<h3 style="margin-top:0">Clinical Assessment Summary</h3>';
+  if(diagnoses.length===0){
+    html += '<div><strong>No strong single diagnosis identified.</strong><br/>Consider general evaluation, optimisation of sleep, exercise, and follow-up.</div>';
+  } else {
+    diagnoses.sort((a,b)=> b.prob - a.prob);
+    diagnoses.forEach(d=>{
+      const color = d.prob >= 70 ? 'color:'+getComputedStyle(document.documentElement).getPropertyValue('--bad') : d.prob >= 40 ? 'color:'+getComputedStyle(document.documentElement).getPropertyValue('--warn') : 'color:'+getComputedStyle(document.documentElement).getPropertyValue('--good');
+      html += `<div style="margin-top:10px;padding:10px;border-radius:8px;background:#ffffff"><div style="${color};font-weight:800">${d.name} — ${d.prob}%</div><div style="margin-top:6px">${d.explain}</div><div style="margin-top:8px"><strong>Recommended tests:</strong><ul>`;
+      d.tests.forEach(t => html += `<li>${t}</li>`);
+      html += `</ul></div></div>`;
+    });
+  }
+
+  // Red flags: collect again and add urgent advice
+  let red = [];
+  if(getVal('q70')>=2) red.push('Progressive neurologic weakness — urgent neurology/neurosurgery review');
+  if(getVal('q75')>=2 || getVal('q88')>=2) red.push('Saddle anesthesia / bowel-bladder loss — emergency (possible cauda equina)');
+  if(getVal('q76')>=2) red.push('Fever with focal bone/joint pain — rule out infection (septic arthritis / osteomyelitis)');
+  if(getVal('q69')>=2) red.push('Known cancer or unexplained weight loss — investigate for metastasis');
+  if(red.length){
+    html += '<div style="margin-top:12px;padding:10px;border-radius:8px;background:#fff6f6;border:1px solid #ffd6d6;color:#991b1b"><strong>RED FLAGS — urgent:</strong><ul>';
+    red.forEach(r=> html += `<li>${r}</li>`);
+    html += '</ul> Please seek immediate medical care.</div>';
+  }
+
+  // Provide score table
+  html += `<hr/><div><strong>Category Scores (approx.)</strong><ul>`;
+  for(const cat in categories){ html += `<li>${cat.toUpperCase()}: ${Math.round((categories[cat].reduce((a,n)=> a+getVal('q'+n),0)/(categories[cat].length*2))*100)}%</li>`; }
+  html += '</ul></div>';
+
+  // final section: printable summary block
+  html += `<div style="margin-top:10px"><button class="btn" onclick="window.print()">Save as PDF / Print</button> <button class="btn secondary" onclick="copySummary()">Copy summary</button></div>`;
+
+  const final = document.getElementById('finalResult');
+  final.style.display = 'block';
+  final.innerHTML = html;
+  // scroll to result
+  final.scrollIntoView({behavior:'smooth'});
+}
+
+/* ---------- copy summary ---------- */
+function copySummary(){
+  const final = document.getElementById('finalResult');
+  if(!final || final.style.display==='none'){ alert('Complete questionnaire and press Show Diagnosis first'); return; }
+  const text = final.innerText || final.textContent;
+  navigator.clipboard && navigator.clipboard.writeText(text).then(()=> alert('Summary copied to clipboard'));
+}
+</script>
+</body>
+</html>
+  
