@@ -1,0 +1,30 @@
+
+---
+
+## `assets/styles.css`
+
+```css
+/* Basic luxury clinical styles — adjust colors as you prefer */
+:root{--accent:#075985;--accent2:#0ea5a3;--bg:#f4fbfd;--card:#ffffff}
+body{font-family: 'Inter', 'Noto Sans Malayalam', Arial, sans-serif;background:var(--bg);color:#04323a;margin:0}
+.container{max-width:1000px;margin:18px auto;padding:0 12px}
+.site-header{background:linear-gradient(90deg,var(--accent),var(--accent2));color:white;padding:18px;border-radius:8px}
+.site-header .container{display:flex;align-items:center;gap:12px}
+.logo{width:56px;height:56px;border-radius:8px}
+.brand h1{margin:0;font-size:18px}
+.tag{opacity:.9;margin-top:4px}
+.main-card{background:var(--card);padding:22px;border-radius:12px;margin-top:18px;box-shadow:0 10px 30px rgba(2,36,38,0.06)}
+.cta-row{display:flex;gap:12px;margin-top:12px}
+.btn{display:inline-block;padding:10px 14px;border-radius:10px;text-decoration:none;font-weight:700}
+.btn.primary{background:linear-gradient(90deg,var(--accent),var(--accent2));color:white}
+.btn.outline{border:2px solid rgba(7,89,133,0.12);color:var(--accent);background:white}
+.features{display:flex;gap:12px;margin-top:18px}
+.feature{flex:1;padding:12px;background:linear-gradient(180deg,#fff,#fbffff);border-radius:10px}
+.small{font-size:13px;color:#234}
+.site-footer{display:flex;justify-content:space-between;align-items:center;padding:14px;color:#234}
+.main-card h2{color:var(--accent)}
+@media(max-width:720px){.features{flex-direction:column}}
+```
+
+---
+
